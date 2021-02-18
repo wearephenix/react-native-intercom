@@ -178,3 +178,4 @@ export function registerForPush(): Promise<void>;
 
 export function isIntercomPush(message: []): Promise<void>;
 
+export function handlePush(message: []): Promise<void>;

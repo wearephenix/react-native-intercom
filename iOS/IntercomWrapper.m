@@ -279,4 +279,9 @@ RCT_EXPORT_METHOD(isIntercomPush:(NSDictionary*)message resolver:(RCTPromiseReso
     resolve([NSNull null]);
 };
 
+// Available as NativeModules.IntercomWrapper.handlePush
+RCT_EXPORT_METHOD(handlePush:(NSDictionary*)message resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
+    resolve([NSNull null]);
+};
+
 @end

@@ -418,21 +418,8 @@ public class IntercomModule extends ReactContextBaseJavaModule {
     public void isIntercomPush(ReadableMap message, Promise promise) {
         try {
             if (getCurrentActivity() != null) {
-                ReadableMapKeySetIterator iterator = message.keySetIterator();
-                HashMap<String, String> map= new HashMap<String, String>();
-                while (iterator.hasNextKey()) {
-                    String key = iterator.nextKey();
-                    ReadableType type = message.getType(key);
-                    switch (type) {
-                        case String:
-                            map.put(key, message.getString(key));
-                            break;
-                        default:
-                            break;
-                    }
 
-                }
-
+                HashMap<String, String> map = this.convertToHashMap(message);
                 Log.i(TAG, "Intercom isIntercomPush map" + map.toString());
                 boolean isIntercomPush = intercomPushClient.isIntercomPush(map);
                 Log.i(TAG, "isIntercomPush=" + isIntercomPush);
@@ -444,6 +431,41 @@ public class IntercomModule extends ReactContextBaseJavaModule {
         } catch(Exception e) {
             promise.reject(e.toString());
         }
+    }
+
+    @ReactMethod
+    public void handlePush(ReadableMap message, Promise promise) {
+        try {
+            if (getCurrentActivity() != null) {
+
+                HashMap<String, String> map = this.convertToHashMap(message);
+                Log.i(TAG, "Intercom handlePush map" + map.toString());
+                intercomPushClient.handlePush(getCurrentActivity().getApplication(), map);
+                promise.resolve(null);
+            } else {
+                Log.e(TAG, "handlePush; getCurrentActivity() is null");
+                promise.resolve(false);
+            }
+        } catch(Exception e) {
+            promise.reject(e.toString());
+        }
+    }
+
+    private HashMap<String, String> convertToHashMap(ReadableMap message){
+        ReadableMapKeySetIterator iterator = message.keySetIterator();
+        HashMap<String, String> map= new HashMap<String, String>();
+        while (iterator.hasNextKey()) {
+            String key = iterator.nextKey();
+            ReadableType type = message.getType(key);
+            switch (type) {
+                case String:
+                    map.put(key, message.getString(key));
+                    break;
+                default:
+                    break;
+            }
+        }
+        return map;
     }
 }
 
