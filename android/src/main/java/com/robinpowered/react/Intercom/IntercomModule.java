@@ -43,7 +43,7 @@ public class IntercomModule extends ReactContextBaseJavaModule {
     }
 
     @Override
-    public boolean canOverrideExistingModule() {        
+    public boolean canOverrideExistingModule() {
         return true;
     }
 
@@ -60,13 +60,13 @@ public class IntercomModule extends ReactContextBaseJavaModule {
                 promise.resolve(null);
             } else if (hasEmail) {
                 Intercom.client().registerIdentifiedUser(
-                    Registration.create().withEmail(options.getString("email"))
+                        Registration.create().withEmail(options.getString("email"))
                 );
                 Log.i(TAG, "registerIdentifiedUser with userEmail");
                 promise.resolve(null);
             } else if (hasUserId) {
                 Intercom.client().registerIdentifiedUser(
-                    Registration.create().withUserId(options.getString("userId"))
+                        Registration.create().withUserId(options.getString("userId"))
                 );
                 Log.i(TAG, "registerIdentifiedUser with userId");
                 promise.resolve(null);
@@ -94,7 +94,7 @@ public class IntercomModule extends ReactContextBaseJavaModule {
             promise.reject(e.toString());
         }
     }
-  
+
     @ReactMethod
     public void presentCarousel(String carouselID, Promise promise) {
         try {
@@ -263,11 +263,11 @@ public class IntercomModule extends ReactContextBaseJavaModule {
     }
 
     private Intercom.Visibility visibilityStringToVisibility(String visibility) {
-      if (visibility.equalsIgnoreCase("VISIBLE")) {
-        return Intercom.Visibility.VISIBLE;
-      } else {
-        return Intercom.Visibility.GONE;
-      }
+        if (visibility.equalsIgnoreCase("VISIBLE")) {
+            return Intercom.Visibility.VISIBLE;
+        } else {
+            return Intercom.Visibility.GONE;
+        }
     }
 
     @ReactMethod
@@ -412,6 +412,38 @@ public class IntercomModule extends ReactContextBaseJavaModule {
             }
         }
         return deconstructedList;
+    }
+
+    @ReactMethod
+    public void isIntercomPush(ReadableMap message, Promise promise) {
+        try {
+            if (getCurrentActivity() != null) {
+                ReadableMapKeySetIterator iterator = message.keySetIterator();
+                HashMap<String, String> map= new HashMap<String, String>();
+                while (iterator.hasNextKey()) {
+                    String key = iterator.nextKey();
+                    ReadableType type = message.getType(key);
+                    switch (type) {
+                        case String:
+                            map.put(key, message.getString(key));
+                            break;
+                        default:
+                            break;
+                    }
+
+                }
+
+                Log.i(TAG, "Intercom isIntercomPush map" + map.toString());
+                boolean isIntercomPush = intercomPushClient.isIntercomPush(map);
+                Log.i(TAG, "isIntercomPush=" + isIntercomPush);
+                promise.resolve(isIntercomPush);
+            } else {
+                Log.e(TAG, "isIntercomPush; getCurrentActivity() is null");
+                promise.resolve(false);
+            }
+        } catch(Exception e) {
+            promise.reject(e.toString());
+        }
     }
 }
 

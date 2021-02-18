@@ -1,14 +1,14 @@
 interface IVisibility {
-  GONE: 'GONE';
-  VISIBLE: 'VISIBLE';
+    GONE: 'GONE';
+    VISIBLE: 'VISIBLE';
 }
 declare const Visibility: IVisibility;
 type VisibilityType = IVisibility[keyof IVisibility];
 
 interface INotifications {
-  UNREAD_COUNT: 'UNREAD_CHANGE_NOTIFICATION';
-  WINDOW_DID_SHOW: 'WINDOW_DID_SHOW';
-  WINDOW_DID_HIDE: 'WINDOW_DID_HIDE';
+    UNREAD_COUNT: 'UNREAD_CHANGE_NOTIFICATION';
+    WINDOW_DID_SHOW: 'WINDOW_DID_SHOW';
+    WINDOW_DID_HIDE: 'WINDOW_DID_HIDE';
 }
 declare const Notifications: INotifications;
 
@@ -36,22 +36,22 @@ export function registerUnidentifiedUser(): Promise<void>;
  * @returns {Promise<void>}
  */
 export function updateUser(attributes: {
-  email?: string;
-  user_id?: string;
-  name?: string;
-  phone?: string;
-  language_override?: string;
-  signed_up_at?: number;
-  unsubscribed_from_emails?: boolean;
-  companies?: Array<{
-    company_id?: string;
+    email?: string;
+    user_id?: string;
     name?: string;
-    created_at?: number;
-    monthly_spend?: number;
-    plan?: string;
+    phone?: string;
+    language_override?: string;
+    signed_up_at?: number;
+    unsubscribed_from_emails?: boolean;
+    companies?: Array<{
+        company_id?: string;
+        name?: string;
+        created_at?: number;
+        monthly_spend?: number;
+        plan?: string;
+        custom_attributes?: { [key: string]: string };
+    }>;
     custom_attributes?: { [key: string]: string };
-  }>;
-  custom_attributes?: { [key: string]: string };
 }): Promise<void>;
 
 /**
@@ -175,3 +175,6 @@ export function removeEventListener(type: string, handler: (event?: any) => void
  * To enable iOS push notifications, simply call the following anywhere in your code:
  */
 export function registerForPush(): Promise<void>;
+
+export function isIntercomPush(message: []): Promise<void>;
+
