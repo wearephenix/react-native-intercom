@@ -276,7 +276,7 @@ RCT_EXPORT_METHOD(setBottomPadding:(CGFloat)padding resolver:(RCTPromiseResolveB
 
 // Available as NativeModules.IntercomWrapper.isIntercomPush
 RCT_EXPORT_METHOD(isIntercomPush:(NSDictionary*)message resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
-    resolve(NO);
+    resolve([NSNull null]);
 };
 
 @end
